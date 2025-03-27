@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:new_test/audio_processor.dart';
+
 
 class LibraryPage extends StatefulWidget {
-  const LibraryPage({super.key, required this.title});
+  final AudioService audioService;
+  const LibraryPage({super.key, required this.title, required this.audioService});
+
+
   final String title;
 
   @override
@@ -34,18 +39,24 @@ class _LibraryPageState extends State<LibraryPage> {
       appBar: AppBar(
         title: Text('Recordings'),
       ),
-      body: ListView.builder(
-        itemCount: recordings.length,
+      body: widget.audioService.audioFiles.isEmpty
+          ? const Center(child: Text('No recordings available.'))
+          : ListView.builder(
+        itemCount: widget.audioService.audioFiles.length,
         itemBuilder: (context, index) {
-          final recording = recordings[index];
+          String path = widget.audioService.audioFiles[index];
+          String fileName = path.split('/').last;
           return ListTile(
-            leading: Icon(Icons.audiotrack),
-            title: Text(recording.title),
-            subtitle: Text('Duration: ${recording.duration}'),
+            title: Text(fileName),
             trailing: IconButton(
-              icon: Icon(Icons.play_arrow),
-              onPressed: () {},
+              icon: const Icon(Icons.play_arrow),
+              onPressed: () async {
+                await widget.audioService.playAudio(path);
+              },
             ),
+            onTap: () async {
+              await widget.audioService.playAudio(path);
+            },
           );
         },
       ),

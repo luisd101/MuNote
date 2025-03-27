@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:new_test/library_page.dart';
 import 'package:new_test/record_page.dart';
+import 'package:new_test/audio_processor.dart';
+import 'package:permission_handler/permission_handler.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -29,25 +32,43 @@ class MyHomePage extends StatefulWidget {
 
 
   final String title;
-  final int size = 16;
+
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final AudioService _audioService = AudioService();
 
+  @override
+  void initState() {
+    super.initState();
+    _requestPermissions();
+    _audioService.init();
+  }
+
+  Future<void> _requestPermissions() async {
+    await Permission.microphone.request();
+    await Permission.storage.request();
+  }
+
+  @override
+  void dispose() {
+    _audioService.dispose();
+    super.dispose();
+  }
   void _recordPageRedirect() {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => const RecordPage(title: 'Record Page')),
+          builder: (context) => RecordPage(title: 'Record Page', audioService: _audioService,)),
     );
   }
     void _libraryPageRedirect() {
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => const LibraryPage(title: 'Library Page')),
+            builder: (context) => LibraryPage(title: 'Library Page', audioService: _audioService,)),
       );
   }
 
