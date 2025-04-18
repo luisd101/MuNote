@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:new_test/login/login.dart';
 import 'package:new_test/home.dart';
-import 'package:new_test/main.dart';
 
 class AuthService {
 
@@ -43,7 +42,6 @@ class AuthService {
         fontSize: 14.0,
       );
     }
-    catch(e){}
   }
 
   Future<void> signin({
@@ -82,9 +80,6 @@ class AuthService {
         textColor: Colors.white,
         fontSize: 14.0,
       );
-    }
-    catch(e){
-
     }
 
   }

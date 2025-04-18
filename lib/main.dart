@@ -1,11 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:new_test/library_page.dart';
-import 'login/login.dart';
-import 'package:new_test/record_page.dart';
-import 'package:new_test/services/audio_processor.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:new_test/services/firebase_options.dart';
 import 'home.dart';
 
