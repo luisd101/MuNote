@@ -19,7 +19,7 @@ if (keystorePropertiesFile.exists()) {
 
 android {
 
-    namespace = "munote"
+    namespace = "munote.myapp"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
