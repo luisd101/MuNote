@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:new_test/services/audio_processor.dart';
 import 'package:intl/intl.dart';
+
 
 class LibraryPage extends StatefulWidget {
   final AudioService audioService;
@@ -31,7 +33,9 @@ class _LibraryPageState extends State<LibraryPage> {
   Future<void> _loadRecordings() async {
     setState(() => _isLoading = true);
     try {
-      final ref = FirebaseStorage.instance.ref().child('voice_memos');
+      final uid = FirebaseAuth.instance.currentUser!.uid;
+      final ref = FirebaseStorage.instance.ref().child(
+          'voice_memos/$uid');
       final result = await ref.listAll();
 
       final recordings = await Future.wait(

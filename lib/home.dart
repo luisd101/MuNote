@@ -1,9 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:new_test/library_page.dart';
 import 'package:new_test/login/login.dart';
 import 'package:new_test/record_page.dart';
 import 'package:new_test/services/audio_processor.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+import 'login/account_settings.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -46,7 +49,14 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-
+  void _accountSettingsRedirect() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AccountSettings(),
+      ),
+    );
+  }
   void _loginPageRedirect() {
     Navigator.push(
       context,
@@ -206,67 +216,76 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             const SizedBox(height: 20),
-            Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: InkWell(
-                borderRadius: BorderRadius.circular(15),
-                onTap: _loginPageRedirect,
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.purple.shade100,
-                        ),
-                        child: Icon(
-                          Icons.account_circle,
-                          size: 30,
-                          color: Colors.purple.shade700,
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Account Settings',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.purple.shade800,
-                              ),
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              'Manage your account and preferences',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey.shade600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Icon(
-                        Icons.chevron_right,
-                        color: Colors.grey.shade400,
-                      ),
-                    ],
+            StreamBuilder<User?>(
+              stream: FirebaseAuth.instance.authStateChanges(),
+              builder: (context, snapshot) {
+                final user = snapshot.data;
+                final isLoggedIn = user != null;
+
+                return Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
                   ),
-                ),
-              ),
-            ),
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(15),
+                    onTap: isLoggedIn ? _accountSettingsRedirect : _loginPageRedirect,
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 60,
+                            height: 60,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: isLoggedIn ? Colors.purple.shade700 : Colors.orange.shade100,
+                            ),
+                            child: Icon(
+                              isLoggedIn ? Icons.account_circle_outlined : Icons.login,
+                              size: 30,
+                              color: isLoggedIn ? Colors.purple.shade700 : Colors.orange.shade100,
+                            ),
+                          ),
+                          const SizedBox(width: 20),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  isLoggedIn ? 'Account Settings' : 'Sign In',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: isLoggedIn ? Colors.purple.shade800 : Colors.orange.shade800,
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                Text(
+                                  isLoggedIn ? 'Manage your account and preferences' : 'Log in to sync your ideas',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey.shade600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Icon(
+                            Icons.chevron_right,
+                            color: Colors.grey.shade400,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              }
+            )
           ],
         ),
       ),
     );
   }
 }
+

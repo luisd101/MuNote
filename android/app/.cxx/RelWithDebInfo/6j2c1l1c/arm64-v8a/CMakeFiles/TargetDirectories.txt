@@ -1,0 +1,2 @@
+/Users/luisd101/StudioProjects/MuNote/android/app/.cxx/RelWithDebInfo/6j2c1l1c/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/luisd101/StudioProjects/MuNote/android/app/.cxx/RelWithDebInfo/6j2c1l1c/arm64-v8a/CMakeFiles/rebuild_cache.dir

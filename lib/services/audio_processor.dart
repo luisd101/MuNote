@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:path_provider/path_provider.dart';
@@ -16,16 +18,28 @@ class AudioService {
   String? audioPath;
   String? currentlyPlayingUrl;
 
+  StreamSubscription<User?>? _authSub;
+
   Future<void> init() async {
     await _recorder.openRecorder();
     await _player.openPlayer();
-    await _loadRemoteMemos(); // Load existing memos when initializing
+    _authSub = FirebaseAuth.instance.authStateChanges().listen((user) {
+      if (user != null) {
+        _loadRemoteMemos();
+      }
+      else {
+        remoteMemoUrls.clear();
+      }
+    });
+
   }
 
   // Load memos from Firebase Storage
   Future<void> _loadRemoteMemos() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
     try {
-      final ref = _storage.ref().child('voice_memos');
+      final ref = _storage.ref().child('voice_memos').child(user.uid);
       final result = await ref.listAll();
 
       remoteMemoUrls = await Future.wait(
@@ -37,21 +51,30 @@ class AudioService {
   }
 
   // Upload audio file to Firebase Storage
+
   Future<String?> uploadCurrentRecording() async {
-    if (audioPath == null || !File(audioPath!).existsSync()) return null;
+    final path = audioPath;
+    if (path == null || !File(path).existsSync()) return null;
+
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return null;
 
     try {
-      final audioFile = File(audioPath!);
-      final timestamp = (DateTime.now());
-      final fileName = 'voice_memo_$timestamp.aac';
+      final file = File(path);
+      final ts = DateTime.now().millisecondsSinceEpoch;
+      final fileName = 'voice_memo_$ts.aac';
 
-      final ref = _storage.ref().child('voice_memos').child(fileName);
-      await ref.putFile(audioFile);
+      // → include UID in the path
+      final ref = _storage
+          .ref()
+          .child('voice_memos')
+          .child(user.uid)
+          .child(fileName);
 
-      // Get the download URL and add to our list
+      await ref.putFile(file);
       final downloadUrl = await ref.getDownloadURL();
-      remoteMemoUrls.add(downloadUrl);
 
+      remoteMemoUrls.add(downloadUrl);
       return downloadUrl;
     } catch (e) {
       print('Error uploading audio file: $e');
