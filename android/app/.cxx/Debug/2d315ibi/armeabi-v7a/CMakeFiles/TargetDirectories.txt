@@ -1,0 +1,2 @@
+/Users/luisd101/StudioProjects/MuNote/android/app/.cxx/Debug/2d315ibi/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/luisd101/StudioProjects/MuNote/android/app/.cxx/Debug/2d315ibi/armeabi-v7a/CMakeFiles/rebuild_cache.dir
