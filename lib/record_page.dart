@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:new_test/services/audio_processor.dart';
+import 'package:myapp/services/audio_processor.dart';
 
 class RecordPage extends StatefulWidget {
   final AudioService audioService;
@@ -41,7 +41,7 @@ class _RecordPageState extends State<RecordPage> {
           ),
         ),
       ),
-      body: Padding(
+      body: SafeArea(child: SingleChildScrollView(
         padding: const EdgeInsets.all(10.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -217,9 +217,29 @@ class _RecordPageState extends State<RecordPage> {
                     ),
                     const SizedBox(height: 10),
                     ElevatedButton(
-                      onPressed: () {
-                        // Save notes functionality
-                      },
+                      onPressed: () async {
+                        final notes = _notesController.text.trim();
+                        if (notes.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Please enter some notes first')),
+                          );
+                          return;
+                        }
+                        final url = await widget.audioService
+                            .uploadCurrentRecording(notes: notes);
+                        if (url != null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Recording & notes saved!')),
+                          );
+                          _notesController.clear();
+                          setState(() {}); // reload any UI that shows memos
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Error saving memo, try again')),
+                          );
+                        }
+                      }
+                      ,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.purple.shade100,
                         shape: RoundedRectangleBorder(
@@ -245,6 +265,7 @@ class _RecordPageState extends State<RecordPage> {
           ],
         ),
       ),
+    )
     );
   }
 }

@@ -1,5 +1,5 @@
 import 'login.dart';
-import 'package:new_test/services/auth_service.dart';
+import 'package:myapp/services/auth_service.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

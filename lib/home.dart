@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:new_test/library_page.dart';
-import 'package:new_test/login/login.dart';
-import 'package:new_test/record_page.dart';
-import 'package:new_test/services/audio_processor.dart';
+import 'package:myapp/library_page.dart';
+import 'package:myapp/login/login.dart';
+import 'package:myapp/record_page.dart';
+import 'package:myapp/services/audio_processor.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'login/account_settings.dart';
@@ -242,7 +242,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               color: isLoggedIn ? Colors.purple.shade700 : Colors.orange.shade100,
                             ),
                             child: Icon(
-                              isLoggedIn ? Icons.account_circle_outlined : Icons.login,
+                              Icons.login,
                               size: 30,
                               color: isLoggedIn ? Colors.purple.shade700 : Colors.orange.shade100,
                             ),

@@ -1,15 +1,16 @@
 {
   "project_info": {
     "project_number": "714741175066",
+    "firebase_url": "https://munote-21dc4-default-rtdb.firebaseio.com",
     "project_id": "munote-21dc4",
     "storage_bucket": "munote-21dc4.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:714741175066:android:4866fe682a0819325392a3",
+        "mobilesdk_app_id": "1:714741175066:android:7d39d5ac216a4a4f5392a3",
         "android_client_info": {
-          "package_name": "com.example.new_test"
+          "package_name": "munote.myapp"
         }
       },
       "oauth_client": [
@@ -43,9 +44,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:714741175066:android:7d39d5ac216a4a4f5392a3",
+        "mobilesdk_app_id": "1:714741175066:android:6ce6f61c965995b45392a3",
         "android_client_info": {
-          "package_name": "munote.myapp"
+          "package_name": "munote.org.app"
         }
       },
       "oauth_client": [
