@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/services/audio_processor.dart';
 
@@ -219,27 +220,24 @@ class _RecordPageState extends State<RecordPage> {
                     ElevatedButton(
                       onPressed: () async {
                         final notes = _notesController.text.trim();
-                        if (notes.isEmpty) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Please enter some notes first')),
-                          );
-                          return;
-                        }
                         final url = await widget.audioService
                             .uploadCurrentRecording(notes: notes);
-                        if (url != null) {
+                        if (FirebaseAuth.instance.currentUser == null) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Recording & notes saved!')),
+                            const SnackBar(content: Text('Saved locally.')),
                           );
-                          _notesController.clear();
-                          setState(() {}); // reload any UI that shows memos
+                        } else if (url != null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Uploaded to cloud.')),
+                          );
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Error saving memo, try again')),
+                            const SnackBar(content: Text('Error saving; please try again.')),
                           );
                         }
-                      }
-                      ,
+                        _notesController.clear();
+                        setState(() {});
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.purple.shade100,
                         shape: RoundedRectangleBorder(

@@ -239,12 +239,12 @@ class _MyHomePageState extends State<MyHomePage> {
                             height: 60,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: isLoggedIn ? Colors.purple.shade700 : Colors.orange.shade100,
+                              color: isLoggedIn ? Colors.purple.shade700 : Colors.orange.shade200,
                             ),
                             child: Icon(
-                              Icons.login,
+                              Icons.login_sharp,
                               size: 30,
-                              color: isLoggedIn ? Colors.purple.shade700 : Colors.orange.shade100,
+                              color: isLoggedIn ? Colors.purple.shade700 : Colors.orange.shade200,
                             ),
                           ),
                           const SizedBox(width: 20),
