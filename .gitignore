@@ -43,3 +43,5 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+/Users/luisd101/StudioProjects/MuNote/lib/services/firebase_options.dart

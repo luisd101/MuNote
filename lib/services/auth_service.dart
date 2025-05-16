@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:new_test/login/login.dart';
-import 'package:new_test/home.dart';
+import 'package:myapp/login/login.dart';
+import 'package:myapp/home.dart';
 
 class AuthService {
 
